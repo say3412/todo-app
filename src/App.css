@@ -1,0 +1,11 @@
+.app {
+    max-width: 500px;
+    width: 100%;
+    box-sizing: border-box; /* 계산해서 전체가 넘지 않도록 함*/
+    padding: 20px;
+    margin: auto;
+    /* border: 1px solid gray; */
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
