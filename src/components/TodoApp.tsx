@@ -5,33 +5,6 @@ import TodoList from "./TodoList";
 import reducer from "./TodoReducer";
 import { TodoDispatchContext, TodoStateContext } from "../TodoContext";
 
-const mockTodos = [
-  {
-    id: 0,
-    isDone: false,
-    content: "Javascript 공부하기",
-    createDate: new Date().getTime(),
-  },
-  {
-    id: 1,
-    isDone: false,
-    content: "AI 공부하기",
-    createDate: new Date().getTime(),
-  },
-  {
-    id: 2,
-    isDone: false,
-    content: "React 공부하기",
-    createDate: new Date().getTime(),
-  },
-  {
-    id: 3,
-    isDone: false,
-    content: "운동 하기",
-    createDate: new Date().getTime(),
-  },
-];
-
 interface Todo {
   id: number;
   isDone: boolean;
@@ -40,8 +13,12 @@ interface Todo {
 }
 
 function TodoApp() {
-  const [todos, dispath] = useReducer(reducer, mockTodos);
-  const idRef = useRef(4);
+  const storedTodos = localStorage.getItem('todos');
+  const initTodos = storedTodos ? JSON.parse(storedTodos) : [];
+  const [todos, dispath] = useReducer(reducer, initTodos);
+
+  const initId = Number(localStorage.getItem('uid')) ?? 0;
+  const idRef = useRef(initId);
 
   const onCreate = useCallback((content: string) => {
     const newItem = {
@@ -53,6 +30,7 @@ function TodoApp() {
 
     dispath({ type: "CREATE", newItem: newItem }); // 속성명과 변수명 같아서 생략 가능
     idRef.current += 1;
+    localStorage.setItem('uid', JSON.stringify(idRef.current));
   }, []);
 
   const onUpdate = useCallback((targetId: number) => {

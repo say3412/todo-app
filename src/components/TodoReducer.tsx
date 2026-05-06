@@ -6,17 +6,25 @@ type Action =
   | { type: "DELETE"; targetId: number };
 
 export default function reducer(todos: Todo[], action: Action) {
+  let result;
+
   switch (action.type) {
     case "CREATE": {
-      return [action.newItem, ...todos];
+      result = [action.newItem, ...todos];
+      break;
     }
     case "UPDATE": {
-      return todos.map((todo) => action.targetId === todo.id ? { ...todo, isDone: !todo.isDone } : todo);
+      result = todos.map((todo) => action.targetId === todo.id ? { ...todo, isDone: !todo.isDone } : todo);
+      break;
     }
     case "DELETE": {
-      return todos.filter((todo) => action.targetId !== todo.id);
+      result = todos.filter((todo) => action.targetId !== todo.id);
+      break;
     }
     default:
-      return todos;
+      result = todos;
   }
+
+  localStorage.setItem('todos', JSON.stringify(result));
+  return result;
 }
