@@ -1,16 +1,11 @@
 import "./TodoList.css";
 import TodoItem from "./TodoItem";
-import type { Todo } from "./TodoType.ts";
 import { useState } from "react";
+import { useTodoStateContext } from "../useTodoContext.ts";
 
-interface Props {
-  todos: Todo[];
-  onUpdate: (targetId:number) => void;
-  onDelete: (targetId:number) => void;
-}
-
-function TodoList({ todos, onUpdate, onDelete }: Props) {
+function TodoList() {
   const [search, setSearch] = useState<string>("");
+  const { todos } = useTodoStateContext();
 
   const onChangSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -19,7 +14,9 @@ function TodoList({ todos, onUpdate, onDelete }: Props) {
   const getSearchResult = () => {
     return search === ""
       ? todos
-      : todos.filter((todo) => todo.content.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
+      : todos.filter((todo) =>
+          todo.content.toLocaleLowerCase().includes(search.toLocaleLowerCase()),
+        );
   };
 
   const onKeyDownSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -40,7 +37,7 @@ function TodoList({ todos, onUpdate, onDelete }: Props) {
         onKeyDown={onKeyDownSearch}
       />
       {getSearchResult().map((todo) => (
-        <TodoItem todo={todo} key={todo.id} onUpdate={onUpdate} onDelete={onDelete} />
+        <TodoItem todo={todo} key={todo.id} />
       ))}
     </div>
   );

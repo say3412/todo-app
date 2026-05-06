@@ -1,13 +1,13 @@
 import React, { useRef, useState } from "react";
 import "./TodoEditor.css";
+import { useTodoDispatchContext } from "../useTodoContext";
 
-interface Props {
-  onCreate: (content: string) => void;
-}
-
-function TodoEditor({ onCreate }: Props) {
+function TodoEditor() {
   const [content, setContent] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const { onCreate } = useTodoDispatchContext();
+
   const onChangeContent = (e: React.ChangeEvent<HTMLInputElement>) => {
     setContent(e.target.value);
   };
@@ -25,7 +25,7 @@ function TodoEditor({ onCreate }: Props) {
     if (e.key === "Enter") {
       onSubmit();
     }
-  }
+  };
 
   return (
     <div className="todoEditor">
