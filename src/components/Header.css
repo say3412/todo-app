@@ -1,3 +1,8 @@
 .header h1 {
     color: rgb(0, 106, 255);
 }
+
+.date-weather {
+    display: flex;
+    gap: 2rem;
+}
